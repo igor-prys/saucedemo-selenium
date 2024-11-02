@@ -13,10 +13,11 @@ public class LoginPageTest {
 
     @BeforeAll
     public static void setup() {
-        driver= DriverSingleton.getDriver();
+        driver = DriverSingleton.getDriver();
     }
+
     @BeforeEach
-    public void before(){
+    public void before() {
         loginPage.openPage();
     }
 
@@ -32,36 +33,36 @@ public class LoginPageTest {
         loginPage.enterUserName("");
         loginPage.enterPassword("abc");
         loginPage.acceptLoginButton();
-        Assertions.assertEquals("Epic sadface: Username is required",loginPage.getErrorText());
+        Assertions.assertEquals("Epic sadface: Username is required", loginPage.getErrorText());
     }
 
     @Test
-    public void shouldProhibitAccessWithoutPassword(){
+    public void shouldProhibitAccessWithoutPassword() {
         loginPage.enterUserName("abc");
         loginPage.enterPassword("abc");
         loginPage.clearPassword();
         loginPage.acceptLoginButton();
-        Assertions.assertEquals("Epic sadface: Password is required",loginPage.getErrorText());
+        Assertions.assertEquals("Epic sadface: Password is required", loginPage.getErrorText());
     }
 
     @Test
-    public void shouldProhibitAccessWithoutCredentials(){
+    public void shouldProhibitAccessWithoutCredentials() {
         loginPage.enterUserName("abc");
         loginPage.enterPassword("abc");
         loginPage.clearUsername();
         loginPage.clearPassword();
         loginPage.acceptLoginButton();
-        Assertions.assertEquals("Epic sadface: Username is required",loginPage.getErrorText());
+        Assertions.assertEquals("Epic sadface: Username is required", loginPage.getErrorText());
     }
 
     @Test
-    public void shouldLoginWithCorrectCredentials(){
+    public void shouldLoginWithCorrectCredentials() {
         User user = UserCreator.withCredentialsFromProperty();
         loginPage.enterUserName(user.getUsername());
         loginPage.enterPassword(user.getPassword());
-       InventoryPage inventoryPage= loginPage.acceptLoginButton();
-        Assertions.assertEquals("Swag Labs",inventoryPage.getTitle());
-        Assertions.assertEquals("Products",inventoryPage.getHeaderTitleElementValue());
+        InventoryPage inventoryPage = loginPage.acceptLoginButton();
+        Assertions.assertEquals("Swag Labs", inventoryPage.getTitle());
+        Assertions.assertEquals("Products", inventoryPage.getHeaderTitleElementValue());
     }
 
 

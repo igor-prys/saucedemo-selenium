@@ -7,13 +7,18 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 
 import java.time.Duration;
 
 public class LoginPage {
+    private final Logger logger = LoggerFactory.getLogger(LoginPage.class);
     private final String PAGE_URL = "https://www.saucedemo.com/";
     private WebDriver driver;
     private WebDriverWait wait;
+
 
     @FindBy(xpath = "//*[@id='user-name']")
     private WebElement username;
@@ -48,26 +53,32 @@ public class LoginPage {
     }
 
     public String getErrorText() {
-       return errorMessage.getText();
+        return errorMessage.getText();
     }
 
     public LoginPage openPage() {
+        logger.info("Open login page");
         driver.navigate().to(PAGE_URL);
+        logger.debug("Login page is opened");
         return this;
     }
 
-    private void clearInputElement(WebElement element){
-        int usernameLength=element.getAttribute("value").length();
-        for(int i=0;i<usernameLength;i++){
+    private void clearInputElement(WebElement element) {
+        int usernameLength = element.getAttribute("value").length();
+        for (int i = 0; i < usernameLength; i++) {
             element.sendKeys(Keys.BACK_SPACE);
         }
     }
 
-    public void clearUsername(){
-      clearInputElement(username);
+    public void clearUsername() {
+        logger.info("Clear username");
+        clearInputElement(username);
+        logger.debug("Username is cleared");
     }
 
-    public void clearPassword(){
-       clearInputElement(password);
+    public void clearPassword() {
+        logger.info("Clear password");
+        clearInputElement(password);
+        logger.debug("Password is cleared");
     }
 }
