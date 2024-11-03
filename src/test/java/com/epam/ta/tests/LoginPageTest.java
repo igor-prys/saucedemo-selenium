@@ -1,6 +1,6 @@
 package com.epam.ta.tests;
 
-import com.epam.ta.service.UserCreator;
+import com.epam.ta.services.UserCreator;
 import com.epam.ta.driver.DriverSingleton;
 import com.epam.ta.models.User;
 import com.epam.ta.pages.InventoryPage;
