@@ -48,8 +48,8 @@ public class LoginPage {
     }
 
     public void enterCredentials(User user){
-        enterUsername(user.getUsername());
-        enterPassword(user.getPassword());
+        enterUsername(user.username());
+        enterPassword(user.password());
     }
 
     public InventoryPage acceptLoginButton() {
