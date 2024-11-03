@@ -6,11 +6,16 @@ import com.epam.ta.models.User;
 import com.epam.ta.pages.InventoryPage;
 import com.epam.ta.pages.LoginPage;
 import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 import org.openqa.selenium.WebDriver;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 
+
+//@TestInstance(TestInstance.Lifecycle.PER_CLASS)
+//@Execution(ExecutionMode.CONCURRENT)
 public class LoginPageTest {
     private static WebDriver driver;
     private LoginPage loginPage = new LoginPage(driver);
