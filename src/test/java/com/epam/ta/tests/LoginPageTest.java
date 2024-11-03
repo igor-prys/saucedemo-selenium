@@ -9,11 +9,14 @@ import org.junit.jupiter.api.*;
 import org.openqa.selenium.WebDriver;
 
 public class LoginPageTest {
-    protected static WebDriver driver;
+    private static WebDriver driver;
+    private LoginPage loginPage = new LoginPage(driver);
+    private static User user;
 
     @BeforeAll
     public static void setup() {
         driver = DriverSingleton.getDriver();
+        user=UserCreator.withCredentialsFromProperty();
     }
 
     @BeforeEach
@@ -26,20 +29,20 @@ public class LoginPageTest {
         DriverSingleton.closeDriver();
     }
 
-    LoginPage loginPage = new LoginPage(driver);
 
     @Test
     public void shouldProhibitAccessWithoutUsername() {
-        loginPage.enterUserName("");
-        loginPage.enterPassword("abc");
+        loginPage.enterUserName(user.getUsername());
+        loginPage.enterPassword(user.getPassword());
+        loginPage.clearUsername();
         loginPage.acceptLoginButton();
         Assertions.assertEquals("Epic sadface: Username is required", loginPage.getErrorText());
     }
 
     @Test
     public void shouldProhibitAccessWithoutPassword() {
-        loginPage.enterUserName("abc");
-        loginPage.enterPassword("abc");
+        loginPage.enterUserName(user.getUsername());
+        loginPage.enterPassword(user.getPassword());
         loginPage.clearPassword();
         loginPage.acceptLoginButton();
         Assertions.assertEquals("Epic sadface: Password is required", loginPage.getErrorText());
@@ -47,8 +50,8 @@ public class LoginPageTest {
 
     @Test
     public void shouldProhibitAccessWithoutCredentials() {
-        loginPage.enterUserName("abc");
-        loginPage.enterPassword("abc");
+        loginPage.enterUserName(user.getUsername());
+        loginPage.enterPassword(user.getPassword());
         loginPage.clearUsername();
         loginPage.clearPassword();
         loginPage.acceptLoginButton();

@@ -16,7 +16,7 @@ public class DriverSingleton {
     }
 
     private static String getBrowser() {
-       return Optional.ofNullable(System.getProperty("browser")).orElse("chrome");
+        return Optional.ofNullable(System.getProperty("browser")).orElse("chrome");
     }
 
     public static WebDriver getDriver() {
