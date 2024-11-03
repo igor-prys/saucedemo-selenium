@@ -39,7 +39,7 @@ public class LoginPage {
         PageFactory.initElements(driver, this);
     }
 
-    public void enterUserName(String text) {
+    public void enterUsername(String text) {
         username.sendKeys(text);
     }
 
@@ -48,7 +48,7 @@ public class LoginPage {
     }
 
     public void enterCredentials(User user){
-        enterUserName(user.getUsername());
+        enterUsername(user.getUsername());
         enterPassword(user.getPassword());
     }
 
