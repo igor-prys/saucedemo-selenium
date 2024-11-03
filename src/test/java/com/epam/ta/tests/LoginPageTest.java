@@ -93,5 +93,4 @@ public class LoginPageTest {
                 "visual_user"
         );
     }
-
 }
