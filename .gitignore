@@ -1,0 +1,11 @@
+# Java files
+*.class
+
+# Package files
+*.jar
+target/
+/logs/
+
+# Idea
+.idea
+*.iml
