@@ -1,5 +1,6 @@
 package com.epam.ta.pages;
 
+import com.epam.ta.models.User;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -44,6 +45,11 @@ public class LoginPage {
 
     public void enterPassword(String text) {
         password.sendKeys(text);
+    }
+
+    public void enterCredentials(User user){
+        enterUserName(user.getUsername());
+        enterPassword(user.getPassword());
     }
 
     public InventoryPage acceptLoginButton() {

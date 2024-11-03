@@ -1,4 +1,4 @@
-package Service;
+package com.epam.ta.service;
 
 import com.epam.ta.models.User;
 
