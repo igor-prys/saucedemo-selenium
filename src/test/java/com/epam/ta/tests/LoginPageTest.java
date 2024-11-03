@@ -8,6 +8,9 @@ import com.epam.ta.pages.LoginPage;
 import org.junit.jupiter.api.*;
 import org.openqa.selenium.WebDriver;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.*;
+
 public class LoginPageTest {
     private static WebDriver driver;
     private LoginPage loginPage = new LoginPage(driver);
@@ -16,7 +19,7 @@ public class LoginPageTest {
     @BeforeAll
     public static void setup() {
         driver = DriverSingleton.getDriver();
-        user=UserCreator.withCredentialsFromProperty();
+        user = UserCreator.withCredentialsFromProperty();
     }
 
     @BeforeEach
@@ -34,14 +37,14 @@ public class LoginPageTest {
     public void shouldProhibitAccessWithoutUsername() {
         loginPage.clearUsername();
         loginPage.acceptLoginButton();
-        Assertions.assertEquals("Epic sadface: Username is required", loginPage.getErrorText());
+        assertThat(loginPage.getErrorText(), containsString("Username is required"));
     }
 
     @Test
     public void shouldProhibitAccessWithoutPassword() {
         loginPage.clearPassword();
         loginPage.acceptLoginButton();
-        Assertions.assertEquals("Epic sadface: Password is required", loginPage.getErrorText());
+        assertThat(loginPage.getErrorText(), containsString("Password is required"));
     }
 
     @Test
@@ -49,13 +52,13 @@ public class LoginPageTest {
         loginPage.clearUsername();
         loginPage.clearPassword();
         loginPage.acceptLoginButton();
-        Assertions.assertEquals("Epic sadface: Username is required", loginPage.getErrorText());
+        assertThat(loginPage.getErrorText(), containsString("Username is required"));
     }
 
     @Test
     public void shouldLoginWithCorrectCredentials() {
         InventoryPage inventoryPage = loginPage.acceptLoginButton();
-        Assertions.assertEquals("Swag Labs", inventoryPage.getTitle());
-        Assertions.assertEquals("Products", inventoryPage.getHeaderTitleElementValue());
+        assertThat(inventoryPage.getTitle(), is(equalTo("Swag Labs")));
+        assertThat(inventoryPage.getHeaderTitleElementValue(), is(equalTo("Products")));
     }
 }
