@@ -18,6 +18,7 @@ import java.util.Optional;
 
 public class LoginPage {
     private final Logger logger = LoggerFactory.getLogger(LoginPage.class);
+    private final String WAIT_PROPERTY = "wait.timeout.seconds";
     private final int WAIT_DEFAULT = 10;
     private final String PAGE_URL = "https://www.saucedemo.com/";
     private WebDriver driver;
@@ -38,8 +39,7 @@ public class LoginPage {
 
     public LoginPage(WebDriver driver) {
         this.driver = driver;
-
-        int waitDuration = TestDataReader.getIntProperty("wait.timeout.seconds").orElse(WAIT_DEFAULT);
+        int waitDuration = TestDataReader.getIntProperty(WAIT_PROPERTY).orElse(WAIT_DEFAULT);
         this.wait = new WebDriverWait(driver, Duration.ofSeconds(waitDuration));
         PageFactory.initElements(driver, this);
     }
