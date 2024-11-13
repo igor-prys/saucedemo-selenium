@@ -1,6 +1,7 @@
 package com.epam.ta.pages;
 
 import com.epam.ta.models.User;
+import com.epam.ta.services.TestDataReader;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -13,9 +14,11 @@ import org.slf4j.LoggerFactory;
 
 
 import java.time.Duration;
+import java.util.Optional;
 
 public class LoginPage {
     private final Logger logger = LoggerFactory.getLogger(LoginPage.class);
+    private final int WAIT_DEFAULT = 10;
     private final String PAGE_URL = "https://www.saucedemo.com/";
     private WebDriver driver;
     private WebDriverWait wait;
@@ -35,7 +38,9 @@ public class LoginPage {
 
     public LoginPage(WebDriver driver) {
         this.driver = driver;
-        this.wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+
+        int waitDuration = TestDataReader.getIntProperty("wait.timeout.seconds").orElse(WAIT_DEFAULT);
+        this.wait = new WebDriverWait(driver, Duration.ofSeconds(waitDuration));
         PageFactory.initElements(driver, this);
     }
 
@@ -47,7 +52,7 @@ public class LoginPage {
         password.sendKeys(text);
     }
 
-    public void enterCredentials(User user){
+    public void enterCredentials(User user) {
         enterUsername(user.username());
         enterPassword(user.password());
     }
@@ -70,7 +75,9 @@ public class LoginPage {
     }
 
     private void clearInputElement(WebElement element) {
-        int usernameLength = element.getAttribute("value").length();
+        int usernameLength = Optional.ofNullable(element.getAttribute("value"))
+                .map(v -> v.length())
+                .orElse(0);
         for (int i = 0; i < usernameLength; i++) {
             element.sendKeys(Keys.BACK_SPACE);
         }
