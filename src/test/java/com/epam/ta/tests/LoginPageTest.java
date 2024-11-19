@@ -5,6 +5,7 @@ import com.epam.ta.driver.DriverSingleton;
 import com.epam.ta.models.User;
 import com.epam.ta.pages.InventoryPage;
 import com.epam.ta.pages.LoginPage;
+import com.epam.ta.utils.WebdriverUtils;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
@@ -78,7 +79,7 @@ public class LoginPageTest {
     @DisplayName("US-4-additional: verify success login")
     public void shouldLoginWithCorrectCredentials() {
         InventoryPage inventoryPage = loginPage.acceptLoginButton();
-        assertThat(inventoryPage.getTitle(), is(equalTo("Swag Labs")));
+        assertThat(WebdriverUtils.getCurrentTitle(), is(equalTo("Swag Labs")));
         assertThat(inventoryPage.getHeaderTitleElementValue(), is(equalTo("Products")));
     }
 
@@ -91,7 +92,7 @@ public class LoginPageTest {
         loginPage.enterUsername(username);
         loginPage.acceptLoginButton();
 
-        assertThat("Title should be 'Swag Labs'", loginPage.getPageTitle(), is("Swag Labs"));
+        assertThat("Title should be 'Swag Labs'", WebdriverUtils.getCurrentTitle(), is("Swag Labs"));
     }
 
     private static Stream<String> getUsernames() {

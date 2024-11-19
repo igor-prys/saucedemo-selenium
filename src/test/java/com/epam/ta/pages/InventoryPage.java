@@ -9,7 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 
-public class InventoryPage {
+public class InventoryPage extends BasePage {
     private final Logger logger = LoggerFactory.getLogger(InventoryPage.class);
     private WebDriver driver;
 
@@ -21,9 +21,15 @@ public class InventoryPage {
         PageFactory.initElements(driver, this);
     }
 
-    public String getTitle() {
-        logger.info("Fetch title");
-        return driver.getTitle();
+
+    @Override
+    protected String getRelativeUrl() {
+        return "/inventory";
+    }
+
+    @Override
+    protected void navigateByDirectLink() {
+        driver.navigate().to( getBaseUrl() + getRelativeUrl());
     }
 
     public String getHeaderTitleElementValue() {

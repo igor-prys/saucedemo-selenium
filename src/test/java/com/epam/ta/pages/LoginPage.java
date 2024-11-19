@@ -17,11 +17,10 @@ import org.slf4j.LoggerFactory;
 import java.time.Duration;
 import java.util.Optional;
 
-public class LoginPage {
+public class LoginPage extends BasePage {
     private final Logger logger = LoggerFactory.getLogger(LoginPage.class);
     private final String WAIT_PROPERTY = "wait.timeout.seconds";
     private final int WAIT_DEFAULT = 10;
-    private final String PAGE_URL = "https://www.saucedemo.com/";
     private WebDriver driver;
     private WebDriverWait wait;
 
@@ -70,7 +69,7 @@ public class LoginPage {
 
     public LoginPage openPage() {
         logger.info("Open login page");
-        driver.navigate().to(PAGE_URL);
+        navigateByDirectLink();
         logger.debug("Login page is opened");
         return this;
     }
@@ -96,7 +95,14 @@ public class LoginPage {
         logger.debug("Password is cleared");
     }
 
-    public String getPageTitle() {
-        return driver.getTitle();
+    @Override
+    protected String getRelativeUrl() {
+        return "";
     }
+
+    @Override
+    protected void navigateByDirectLink() {
+        driver.navigate().to( getBaseUrl() + getRelativeUrl());
+    }
+
 }
