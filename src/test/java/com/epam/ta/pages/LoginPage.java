@@ -1,5 +1,6 @@
 package com.epam.ta.pages;
 
+import com.epam.ta.driver.DriverSingleton;
 import com.epam.ta.models.User;
 import com.epam.ta.services.TestDataReader;
 import org.openqa.selenium.Keys;
@@ -37,8 +38,8 @@ public class LoginPage {
     @FindBy(xpath = "//*[@data-test='error']")
     private WebElement errorMessage;
 
-    public LoginPage(WebDriver driver) {
-        this.driver = driver;
+    public LoginPage() {
+        this.driver = DriverSingleton.getDriver();
         int waitDuration = TestDataReader.getIntProperty(WAIT_PROPERTY).orElse(WAIT_DEFAULT);
         this.wait = new WebDriverWait(driver, Duration.ofSeconds(waitDuration));
         PageFactory.initElements(driver, this);
@@ -60,7 +61,7 @@ public class LoginPage {
     public InventoryPage acceptLoginButton() {
         wait.until(ExpectedConditions
                 .elementToBeClickable(loginButton)).click();
-        return new InventoryPage(driver);
+        return new InventoryPage();
     }
 
     public String getErrorText() {
@@ -93,5 +94,9 @@ public class LoginPage {
         logger.info("Clear password");
         clearInputElement(password);
         logger.debug("Password is cleared");
+    }
+
+    public String getPageTitle() {
+        return driver.getTitle();
     }
 }

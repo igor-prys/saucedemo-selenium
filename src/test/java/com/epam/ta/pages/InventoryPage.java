@@ -1,5 +1,6 @@
 package com.epam.ta.pages;
 
+import com.epam.ta.driver.DriverSingleton;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -15,8 +16,8 @@ public class InventoryPage {
     @FindBy(xpath = "//*[@class='header_secondary_container']/span[@class='title']")
     private WebElement headerTitleElement;
 
-    public InventoryPage(WebDriver driver) {
-        this.driver = driver;
+    public InventoryPage() {
+        this.driver = DriverSingleton.getDriver();
         PageFactory.initElements(driver, this);
     }
 
