@@ -1,6 +1,8 @@
 package com.epam.ta.pages;
 
+import com.epam.ta.driver.DriverSingleton;
 import com.epam.ta.models.User;
+import com.epam.ta.services.TestDataReader;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -13,10 +15,12 @@ import org.slf4j.LoggerFactory;
 
 
 import java.time.Duration;
+import java.util.Optional;
 
-public class LoginPage {
+public class LoginPage extends BasePage {
     private final Logger logger = LoggerFactory.getLogger(LoginPage.class);
-    private final String PAGE_URL = "https://www.saucedemo.com/";
+    private final String WAIT_PROPERTY = "wait.timeout.seconds";
+    private final int WAIT_DEFAULT = 10;
     private WebDriver driver;
     private WebDriverWait wait;
 
@@ -33,9 +37,10 @@ public class LoginPage {
     @FindBy(xpath = "//*[@data-test='error']")
     private WebElement errorMessage;
 
-    public LoginPage(WebDriver driver) {
-        this.driver = driver;
-        this.wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+    public LoginPage() {
+        this.driver = DriverSingleton.getDriver();
+        int waitDuration = TestDataReader.getIntProperty(WAIT_PROPERTY).orElse(WAIT_DEFAULT);
+        this.wait = new WebDriverWait(driver, Duration.ofSeconds(waitDuration));
         PageFactory.initElements(driver, this);
     }
 
@@ -47,7 +52,7 @@ public class LoginPage {
         password.sendKeys(text);
     }
 
-    public void enterCredentials(User user){
+    public void enterCredentials(User user) {
         enterUsername(user.username());
         enterPassword(user.password());
     }
@@ -55,7 +60,7 @@ public class LoginPage {
     public InventoryPage acceptLoginButton() {
         wait.until(ExpectedConditions
                 .elementToBeClickable(loginButton)).click();
-        return new InventoryPage(driver);
+        return new InventoryPage();
     }
 
     public String getErrorText() {
@@ -64,13 +69,15 @@ public class LoginPage {
 
     public LoginPage openPage() {
         logger.info("Open login page");
-        driver.navigate().to(PAGE_URL);
+        navigateByDirectLink();
         logger.debug("Login page is opened");
         return this;
     }
 
     private void clearInputElement(WebElement element) {
-        int usernameLength = element.getAttribute("value").length();
+        int usernameLength = Optional.ofNullable(element.getAttribute("value"))
+                .map(v -> v.length())
+                .orElse(0);
         for (int i = 0; i < usernameLength; i++) {
             element.sendKeys(Keys.BACK_SPACE);
         }
@@ -87,4 +94,15 @@ public class LoginPage {
         clearInputElement(password);
         logger.debug("Password is cleared");
     }
+
+    @Override
+    protected String getRelativeUrl() {
+        return "";
+    }
+
+    @Override
+    protected void navigateByDirectLink() {
+        driver.navigate().to( getBaseUrl() + getRelativeUrl());
+    }
+
 }

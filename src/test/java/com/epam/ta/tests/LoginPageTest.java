@@ -5,12 +5,12 @@ import com.epam.ta.driver.DriverSingleton;
 import com.epam.ta.models.User;
 import com.epam.ta.pages.InventoryPage;
 import com.epam.ta.pages.LoginPage;
+import com.epam.ta.utils.WebdriverUtils;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
-import org.openqa.selenium.WebDriver;
 
 import java.util.stream.Stream;
 
@@ -20,15 +20,13 @@ import static org.hamcrest.Matchers.*;
 @Execution(ExecutionMode.CONCURRENT)
 @TestInstance(TestInstance.Lifecycle.PER_METHOD)
 public class LoginPageTest {
-    private WebDriver driver;
     private LoginPage loginPage;
     private User user;
     private boolean isSameThread;
 
     @BeforeEach
     public void setup(TestInfo testInfo) {
-        driver = DriverSingleton.getDriver();
-        loginPage = new LoginPage(driver);
+        loginPage = new LoginPage();
         user = UserCreator.withCredentialsFromProperty();
         loginPage.openPage();
         loginPage.enterCredentials(user);
@@ -81,7 +79,7 @@ public class LoginPageTest {
     @DisplayName("US-4-additional: verify success login")
     public void shouldLoginWithCorrectCredentials() {
         InventoryPage inventoryPage = loginPage.acceptLoginButton();
-        assertThat(inventoryPage.getTitle(), is(equalTo("Swag Labs")));
+        assertThat(WebdriverUtils.getCurrentTitle(), is(equalTo("Swag Labs")));
         assertThat(inventoryPage.getHeaderTitleElementValue(), is(equalTo("Products")));
     }
 
@@ -94,9 +92,7 @@ public class LoginPageTest {
         loginPage.enterUsername(username);
         loginPage.acceptLoginButton();
 
-        String title = driver.getTitle();
-
-        assertThat("Title should be 'Swag Labs'", title, is("Swag Labs"));
+        assertThat("Title should be 'Swag Labs'", WebdriverUtils.getCurrentTitle(), is("Swag Labs"));
     }
 
     private static Stream<String> getUsernames() {
